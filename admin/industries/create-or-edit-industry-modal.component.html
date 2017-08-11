@@ -1,0 +1,52 @@
+﻿<div bsModal #createOrEditModal="bs-modal" (onShown)="onShown()" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="createOrEditModal"
+     aria-hidden="true" [config]="{backdrop: 'static'}">
+    <div class="modal-dialog">
+
+        <div class="modal-content">
+
+            <form *ngIf="active" #roleForm="ngForm" novalidate (ngSubmit)="save()">
+
+                <div class="modal-header">
+                    <button type="button" class="close" (click)="close()" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <h4 class="modal-title">
+                        <span *ngIf="industry.id">{{l("EditIndustry")}}: {{industry.name}}</span>
+                        <span *ngIf="!industry.id">{{l("CreateNewEdition")}}</span>
+                    </h4>
+                </div>
+
+                <div class="modal-body">
+                    <div class="form-group form-md-line-input form-md-floating-label no-hint">
+                        <input #industryNameInput type="text" name="Name" class="form-control" [ngClass]="{'edited':industry.name}" [(ngModel)]="industry.name" required maxlength="64">
+                        <label>{{l("Name")}}</label>
+                    </div>
+
+                    <div class="form-group form-md-line-input form-md-floating-label no-hint">
+                        <input type="text" name="DisplayName" class="form-control" [ngClass]="{'edited':industry.displayName}" [(ngModel)]="industry.displayName" required maxlength="64">
+                        <label>{{l("DisplayName")}}</label>
+                    </div>
+
+                    <div class="md-checkbox-list">
+                        <div class="md-checkbox">
+                            <input id="EditIndustry_IsActive" class="md-check" type="checkbox" name="IsActive" [(ngModel)]="industry.isActive">
+                            <label for="EditIndustry_IsActive">
+                                <span class="inc"></span>
+                                <span class="check"></span>
+                                <span class="box"></span>
+                                {{l("Active")}}
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="modal-footer">
+                    <button [disabled]="saving" type="button" class="btn btn-default" (click)="close()">{{l("Cancel")}}</button>
+                    <button type="submit" class="btn btn-primary blue" [buttonBusy]="saving" [busyText]="l('SavingWithThreeDot')"><i class="fa fa-save"></i> <span>{{l("Save")}}</span></button>
+                </div>
+
+            </form>
+
+        </div>
+    </div>
+</div>

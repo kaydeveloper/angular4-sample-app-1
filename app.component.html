@@ -1,0 +1,27 @@
+<header></header>
+
+<div class="clearfix">
+</div>
+
+<div class="page-container">
+    <!--<div *ngIf="_isNavVisible" class="page-wrapper-row">
+        <nav-foradmin></nav-foradmin>
+    </div>-->
+  <div *ngIf="showsidebar" class="page-sidebar-wrapper">
+    <side-bar></side-bar>
+  </div>
+
+  <div class="page-content-wrapper">
+    <div [ngClass]="{'page-content': _isClassVisible}">
+      <router-outlet></router-outlet>
+    </div>
+  </div>
+
+  <!-- chat-bar.component here... -->
+
+</div>
+
+<div class="page-footer">
+    <footer></footer>
+</div>
+<chat-bar #chatBar></chat-bar>

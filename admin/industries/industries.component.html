@@ -1,0 +1,40 @@
+﻿<div [@routerTransition]>
+    <div class="row margin-bottom-5">
+        <div class="col-xs-6">
+            <div class="page-head">
+                <div class="page-title">
+                    <h1>
+                        <span>{{("Industries")}}</span> <small>{{l("IndustriesHeaderInfo")}}</small>
+                    </h1>
+                </div>
+            </div>
+        </div>
+        <div class="col-xs-6 text-right">
+            <button *ngIf="permission.isGranted('Pages.Editions.Create')"  class="btn btn-primary blue" (click)="createIndustry()"><i class="fa fa-plus"></i>{{l("CreateNewIndustry")}}</button>
+        </div>
+    </div>
+
+    <div class="portlet light margin-bottom-0">
+        <div class="portlet-title portlet-title-filter">
+            <div class="inputs inputs-full-width">
+                <div class="portlet-input">
+                    <form (submit)="getIndustries()">
+                        <div class="input-group">
+                            <input [(ngModel)]="filterText" name="filterText" autoFocus class="form-control" placeholder="{{l('SearchWithThreeDot')}}" type="text">
+                            <span class="input-group-btn">
+                                <button class="btn default" type="submit"><i class="icon-magnifier"></i></button>
+                            </span>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div class="portlet-body">
+            <div>
+                <div id="IndustriesTable"></div>
+            </div>
+        </div>
+    </div>
+    <createOrEditIndustryModal #createOrEditIndustryModal (modalSave)="getIndustries()"></createOrEditIndustryModal>
+
+</div>

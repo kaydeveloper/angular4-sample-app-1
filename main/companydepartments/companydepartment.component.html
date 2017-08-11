@@ -1,0 +1,47 @@
+﻿<div id="CompanyDepartment" [@routerTransition] style="padding: 1% 9%;">
+    <div class="row"></div>
+    <div class="row margin-bottom-5">
+        <div class="col-xs-6">
+            <div class="page-head">
+                <div class="page-title">
+                    <h1>
+                        <span>{{l("Department")}}</span> <small>Manage Departments</small>
+                    </h1>
+                </div>
+            </div>
+        </div>
+        <div class="col-xs-6 text-right"></div>
+    </div>
+    <div class="portlet light margin-bottom-0">
+        <div class="portlet-body">
+            <div class="form">
+                <form class="horizontal-form">
+                    <div class="form-body">
+                        <div class="row margin-bottom-10">
+                            <div class="col-md-6">
+                                <div class="inputs inputs-full-width">
+                                    <div class="portlet-input">
+                                        <div class="input-group">
+                                            <input [(ngModel)]="filterText" name="filterText" autoFocus class="form-control" [placeholder]="l('SearchWithThreeDot')" type="text">
+                                            <span class="input-group-btn">
+                                                <button (click)="getDepartments()" class="btn default" type="submit"><i class="icon-magnifier"></i></button>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6 text-right">
+                                <button (click)="exportToExcel()" class="btn btn-default"><i class="fa fa-file-excel-o"></i> {{l("ExportToExcel")}}</button>
+                                <button (click)="createDepartment()" *ngIf="isGranted('Pages.Administration.OrganizationUnits.ManageOrganizationTree')" class="btn btn-primary blue"><i class="fa fa-plus"></i> Create Department</button>
+                            </div>
+                        </div>
+                    </div>                   
+                </form>
+            </div>
+            <div id="CompanyDepartmentTable"></div>
+
+         </div>
+    </div>
+
+    <createOrEditCompanyDepartmentModal #createOrEditCompanyDepartmentModal (modalSave)="getDepartments()"></createOrEditCompanyDepartmentModal>
+</div>

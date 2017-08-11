@@ -1,0 +1,12 @@
+<div [@routerTransition] class="">
+    <div *ngIf="_isNavVisible" class="page-wrapper-row">
+        <nav-menu></nav-menu>
+    </div>
+    <div class="page-wrapper-row full-height" style="height:100%">
+        <router-outlet></router-outlet>
+        <!--<user-profile></user-profile>-->
+    </div>
+    <div class="page-wrapper-row">
+        <!--<footer></footer>-->
+    </div>
+</div>

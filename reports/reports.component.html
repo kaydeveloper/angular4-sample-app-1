@@ -1,0 +1,394 @@
+<div [@routerTransition]>
+    <div class="wrapper modal-content" style="text-align:center; padding-bottom:5px;">
+        <button class="btn btn-primary blue" [buttonBusy]="saving" [busyText]="l('DownloadWithThreeDot')" (click)="generatePDF()"><i class="fa fa-save"></i> <span>{{l("DownloadAsPDF")}}</span></button>
+    </div>
+    <div class="wrapper modal-content">
+            <div #toPDF id="toPDF" class="chart-area modal-body">
+                <!--<div *ngFor="let workhm of datas" id="secion1">-->
+                <div class="header">
+                    <div class="logo"><img src="../../assets/images/logo.jpg" /></div>
+                    <div class="company-info">
+                        <h2>{{appSession.tenant.name}}</h2>
+                        <div class="date-area">
+                            <p>From: {{humCycle.fromDate | date: 'dd MMMM y'}}</p>
+                            <p>To: {{humCycle.toDate | date: 'dd MMMM y'}}</p>
+                        </div>
+                    </div>
+                    <!--<div class="tenant-logo"><img src="{{workhm.dummyLogo}}" /></div>-->
+                    <div class="tenant-logo">
+                        <img width="180" height="150" *ngIf="appSession.tenant && appSession.tenant.logoId" [src]="remoteServiceBaseUrl + '/TenantCustomization/GetLogo?id=' + appSession.tenant.logoId" alt="logo" class="logo-default" />
+                    </div>
+                </div>
+                <div class="progress-area">
+                    <div class="workhum-progress">
+                        <h6>work<span>hum</span></h6>
+                        <div class="percent">{{humScore.humscore | percent}}</div>
+                        <div class="progress-bar" *ngIf="humScore.humscore * 100 <= 19"><img src="../../assets/images/five-bar-big-1.jpg" /> </div>
+                        <div class="progress-bar" *ngIf="humScore.humscore * 100 >= 20 && humScore.humscore * 100 <= 39"><img src="../../assets/images/five-bar-big-2.jpg" /> </div>
+                        <div class="progress-bar" *ngIf="humScore.humscore * 100 >= 40 && humScore.humscore * 100 <= 59"><img src="../../assets/images/five-bar-big-3.jpg" /> </div>
+                        <div class="progress-bar" *ngIf="humScore.humscore * 100 >= 60 && humScore.humscore * 100 <= 79"><img src="../../assets/images/five-bar-big-4.jpg" /> </div>
+                        <div class="progress-bar" *ngIf="humScore.humscore * 100 >= 80"><img src="../../assets/images/five-bar-big.jpg" /> </div>
+                    </div>
+                    <div class="total-data-list">
+                        <p><b>{{activeUsers}}</b> employees on workhum</p>
+                        <p><b>{{userDetailCount.activeUsersCount}}</b> active workhum employees for this timeframe</p>
+                    </div>
+                    <div class="workhum-build">
+                        <h5>work<span>hum build</span></h5>
+                        <ul>
+                            <li> <span>0-19%</span> <span><img src="../../assets/images/one-bar.jpg" /></span> </li>
+                            <li> <span>20-39%</span> <span><img src="../../assets/images/two-bar.jpg" /></span> </li>
+                            <li> <span>40-59%</span> <span><img src="../../assets/images/three-bar.jpg" /></span> </li>
+                            <li> <span>60-79%</span> <span><img src="../../assets/images/four-bar.jpg" /></span> </li>
+                            <li> <span>80-100%</span> <span><img src="../../assets/images/five-bar.jpg" /></span> </li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="development-area">
+                    <h6>work<span>hum by department</span></h6>
+                    <div *ngFor="let hs of humScoreList">
+                        <div class="dev-area">
+                            <h1>{{hs.humscore | percent}}</h1>
+                            <div class="bar">
+                                <img *ngIf="hs.humscore * 100 <= 19" src="../../assets/images/one-bar.jpg" />
+                                <img *ngIf="hs.humscore * 100 >= 20 && hs.humscore * 100 <= 39" src="../../assets/images/two-bar.jpg" />
+                                <img *ngIf="hs.humscore * 100 >= 40 && hs.humscore * 100 <= 59" src="../../assets/images/three-bar.jpg" />
+                                <img *ngIf="hs.humscore * 100 >= 60 && hs.humscore * 100 <= 79" src="../../assets/images/four-bar.jpg" />
+                                <img *ngIf="hs.humscore * 100 >= 80" src="../../assets/images/five-bar.jpg" />
+                            </div>
+                            <p>[ {{hs.organizationUnit == null? "" : hs.organizationUnit.displayName}} ]</p>
+                        </div>
+                    </div>
+                </div>
+                <!--</div>-->
+
+                <div class="play-area">
+                    <div class="play-discrptions">
+                        <h2>
+                            <svg version="1.1" id="Tree" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+                                 width="38.125px" height="39px" viewBox="461.125 260.375 38.125 39" enable-background="new 461.125 260.375 38.125 39"
+                                 xml:space="preserve">
+                            <path d="M493.978,279.878c0,0.826-0.84,1.417-0.84,1.417l-23.612,14.627c-1.721,1.127-3.128,0.293-3.128-1.846v-28.4
+c0-2.143,1.407-2.973,3.13-1.848l23.612,14.631C493.138,278.46,493.978,279.053,493.978,279.878z" />
+        </svg> play
+                        </h2>
+                        <p>Number of employees who answered yes to work feeling like play</p>
+                    </div>
+                    <div class="play-progress-total">
+                        <!--<img src="../../assets/images/chart-placeholder.png" />-->
+                        <div>
+                            <div *ngIf="barChartLabels.length > 0" style="display: block">
+                                <canvas #playChart id="playChart" baseChart
+                                        [datasets]="barChartData"
+                                        [labels]="barChartLabels"
+                                        [options]="barChartOptions"
+                                        [legend]="barChartLegend"
+                                        [chartType]="barChartType"
+                                        [colors]="colorsOverride"
+                                        (chartHover)="chartHovered($event)"
+                                        (chartClick)="chartClicked($event)"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="play-area">
+                    <div class="play-discrptions">
+                        <h2>
+                            <svg version="1.1" id="Tree" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+                                 width="38.125px" height="39px" viewBox="461.125 260.375 38.125 39" enable-background="new 461.125 260.375 38.125 39"
+                                 xml:space="preserve">
+                            <path d="M497.875,280c0-2.433-1.355-4.676-3.631-6.475c-0.004-0.002-0.008-0.002-0.01-0.005
+  c-0.646-6.386-6.768-11.396-14.234-11.396c-7.467,0-13.589,5.01-14.237,11.396c-0.001,0.003-0.005,0.003-0.008,0.005
+  c-2.275,1.799-3.63,4.042-3.63,6.475c0,5.563,7.055,10.134,16.087,10.671c0,0.604,0,1.222,0,1.842c0,1.787-3.255,3.416-3.255,3.416
+  c-0.177,0.087-0.265,0.309-0.195,0.495c0,0,0.545,1.451,1.662,1.451s2.01-0.894,4.244-0.894c2.234,0,4.359,0.771,4.359,0.771
+  c0.184,0.068,0.449,0.009,0.588-0.13l1.281-1.281c0.141-0.14,0.104-0.31-0.08-0.38c0,0-3.24-1.215-3.24-3.449
+  c0-0.558,0-1.262,0-2.004C491.734,289.517,497.875,285.19,497.875,280z M465.7,280c0-1.822,1.373-3.477,3.614-4.738
+  c-0.018-0.207-0.04-0.415-0.04-0.624c0-4.938,4.804-8.938,10.726-8.938c5.919,0,10.724,4,10.724,8.938
+  c0,0.209-0.021,0.417-0.039,0.624c2.24,1.262,3.613,2.916,3.613,4.738c0,3.332-4.561,6.12-10.723,6.916c0-0.717,0-1.194,0-1.194
+  c0-0.196,0.115-0.468,0.26-0.603l3.275-3.085c0.145-0.137,0.262-0.406,0.262-0.602v-1.521c0-0.198-0.139-0.278-0.309-0.178
+  l-3.18,1.872c-0.172,0.1-0.309,0.021-0.309-0.178v-6.434c0-0.196-0.152-0.307-0.34-0.244l-4.685,1.563
+  c-0.186,0.063-0.338,0.273-0.338,0.47v4.647c0,0.197-0.141,0.282-0.316,0.191l-3.613-1.902c-0.174-0.092-0.43-0.053-0.568,0.086
+  l-0.612,0.611c-0.139,0.14-0.13,0.359,0.017,0.488l4.826,4.221c0.148,0.13,0.268,0.396,0.268,0.594c0,0,0,0.532,0,1.367
+  C471.162,286.648,465.7,283.647,465.7,280z" />
+          </svg> learnings
+                        </h2>
+                        <p>Number of learnings across organisation</p>
+                    </div>
+                    <div class="play-progress-total">
+                        <!--<img src="../../assets/images/chart-placeholder.png" />-->
+                        <div>
+                            <div *ngIf="barChartLabels.length > 0" style="display: block">
+                                <canvas #learnChart id="learnChart" baseChart
+                                        [datasets]="barChartDataSecond"
+                                        [labels]="barChartLabels"
+                                        [options]="barChartOptions"
+                                        [legend]="barChartLegend"
+                                        [chartType]="barChartType"
+                                        [colors]="colorsOverride"
+                                        (chartHover)="chartHovered($event)"
+                                        (chartClick)="chartClicked($event)"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="ten-learning-table">
+                        <div class="left-side-table">
+                            <h5>
+                                Top 10 Learning # at<br />
+                                organisation level
+                            </h5>
+                            <ul *ngIf="learningHashtags != null">
+                                <li *ngFor="let learning of learningHashtags | slice:0:9"><strong>#</strong><span>{{learning.hashtagName}}</span></li>
+                            </ul>
+
+                            <ul *ngIf="learningHashtags == null">
+                                <li><strong>#</strong><span>&nbsp;</span></li>
+                                <li><strong>#</strong><span>&nbsp;</span></li>
+                                <li><strong>#</strong><span>&nbsp;</span></li>
+                                <li><strong>#</strong><span>&nbsp;</span></li>
+                                <li><strong>#</strong><span>&nbsp;</span></li>
+                                <li><strong>#</strong><span>&nbsp;</span></li>
+                                <li><strong>#</strong><span>&nbsp;</span></li>
+                                <li><strong>#</strong><span>&nbsp;</span></li>
+                                <li><strong>#</strong><span>&nbsp;</span></li>
+                                <li><strong>#</strong><span>&nbsp;</span></li>
+                            </ul>
+                        </div>
+                        <div class="left-side-table right">
+                            <h5>
+                                Top Key Learning by<br />
+                                department
+                            </h5>
+                            <ul>
+                                <li></li>
+
+                                <!--<div *ngFor="let hs of humScoreList">-->
+                                <li *ngFor="let learning of keyLearning">
+                                    <strong>{{ learning.departmentName }} #</strong><span>{{learning.learningHashtag == null? "" : learning.learningHashtag.hashtagName}}</span>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="play-area">
+                    <div class="play-discrptions">
+                        <h2>
+                            <svg version="1.1" id="Tree" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+                                 width="38.125px" height="39px" viewBox="461.125 260.375 38.125 39" enable-background="new 461.125 260.375 38.125 39"
+                                 xml:space="preserve">
+                            <path d="M479.251,275.915c-0.684,0.172-1.109,0.91-0.949,1.647c1.311,6.088,1.598,12.469,0.826,18.451
+  c-0.096,0.752,0.389,1.445,1.084,1.549c0.059,0.008,0.119,0.014,0.178,0.014c0.624,0,1.168-0.498,1.258-1.184
+  c0.813-6.314,0.512-13.039-0.869-19.452C480.619,276.201,479.935,275.747,479.251,275.915z M476.306,283.643
+  c-0.699,0.07-1.215,0.738-1.15,1.492c0.311,3.6,0.229,7.152-0.24,10.561c-0.104,0.748,0.377,1.447,1.07,1.559
+  c0.063,0.01,0.125,0.014,0.189,0.014c0.619,0,1.162-0.488,1.256-1.17c0.498-3.623,0.586-7.398,0.258-11.215
+  C477.624,284.127,476.981,283.565,476.306,283.643z M478.298,271.458c-1.434,0.36-2.652,1.303-3.432,2.65
+  c-0.779,1.352-1.025,2.945-0.691,4.489c0.16,0.749,0.307,1.5,0.434,2.25c0.123,0.746,0.803,1.238,1.479,1.104
+  c0.691-0.137,1.148-0.852,1.021-1.598c-0.135-0.792-0.287-1.583-0.457-2.376c-0.18-0.831-0.047-1.689,0.373-2.416
+  c0.422-0.729,1.078-1.236,1.848-1.43c1.596-0.4,3.188,0.678,3.558,2.396c1.365,6.334,1.723,12.68,1.063,18.861
+  c-0.082,0.754,0.42,1.434,1.117,1.521c0.049,0.006,0.1,0.008,0.146,0.008c0.639,0,1.188-0.516,1.262-1.215
+  c0.693-6.496,0.32-13.156-1.111-19.797C484.221,272.718,481.264,270.723,478.298,271.458z M473.888,272.433
+  c0.438-0.594,0.344-1.457-0.209-1.928s-1.35-0.365-1.783,0.226c-0.225,0.305-0.432,0.626-0.625,0.958
+  c-1.379,2.389-1.814,5.211-1.223,7.946c1.086,5.045,1.34,10.225,0.732,14.982c-0.096,0.752,0.391,1.443,1.086,1.547
+  c0.061,0.008,0.119,0.012,0.176,0.012c0.627,0,1.17-0.496,1.258-1.184c0.648-5.088,0.379-10.611-0.775-15.979
+  c-0.436-2.021-0.115-4.107,0.904-5.874C473.571,272.893,473.724,272.657,473.888,272.433z M489.188,285.008
+  c-0.701,0.037-1.242,0.68-1.207,1.438c0.115,2.531,0.078,5.074-0.107,7.559c-0.059,0.756,0.463,1.418,1.162,1.479
+  c0.035,0.002,0.07,0.004,0.105,0.004c0.654,0,1.211-0.543,1.264-1.26c0.197-2.602,0.236-5.266,0.115-7.918
+  C490.484,285.553,489.871,284.987,489.188,285.008z M488.877,283.114c0.053,0,0.105-0.002,0.158-0.01
+  c0.697-0.094,1.191-0.779,1.105-1.531c-0.258-2.237-0.631-4.492-1.107-6.701c-1.012-4.71-5.031-8.13-9.558-8.13
+  c-0.715,0-1.432,0.088-2.129,0.261c-0.578,0.145-1.145,0.346-1.686,0.599c-0.645,0.301-0.939,1.109-0.662,1.805
+  c0.279,0.695,1.029,1.016,1.672,0.715c0.4-0.188,0.822-0.338,1.248-0.444c0.508-0.126,1.031-0.19,1.557-0.19
+  c3.356,0,6.333,2.525,7.081,6.008c0.457,2.117,0.814,4.275,1.061,6.417C487.697,282.606,488.244,283.114,488.877,283.114z
+   M493.162,273.841c-0.578-2.693-1.857-5.168-3.697-7.16c-0.494-0.535-1.299-0.533-1.799,0.002c-0.498,0.535-0.498,1.415-0.002,1.951
+  c1.504,1.629,2.549,3.672,3.021,5.868c1.184,5.496,1.713,11.133,1.574,16.646c-0.02,0.758,0.533,1.508,1.236,1.508h0.035
+  c0.686,0,1.25-0.686,1.27-1.432C494.945,285.477,494.395,279.564,493.162,273.841z M467.745,285.073
+  c0.061,0,0.124-0.004,0.188-0.014c0.693-0.111,1.174-0.809,1.072-1.559c-0.154-1.131-0.357-2.291-0.607-3.451
+  c-0.693-3.211-0.184-6.524,1.438-9.328c1.615-2.799,4.148-4.753,7.123-5.5c2.572-0.639,5.31-0.262,7.673,1.021
+  c0.625,0.344,1.391,0.068,1.707-0.607c0.316-0.678,0.063-1.503-0.564-1.844c-2.889-1.568-6.235-2.023-9.388-1.243
+  c-3.641,0.915-6.734,3.302-8.711,6.722c-1.979,3.428-2.602,7.478-1.754,11.401c0.233,1.088,0.424,2.172,0.567,3.229
+  C466.581,284.582,467.124,285.073,467.745,285.073z M468.124,287.168h-0.043c-0.702,0-1.252,0.455-1.229,1.213
+  c0.05,1.551,0.007,2.891-0.127,4.371c-0.07,0.754,0.441,1.424,1.141,1.498c0.041,0.004,0.084,0.004,0.125,0.004
+  c0.646,0,1.199-0.434,1.264-1.143c0.145-1.602,0.193-3.152,0.141-4.824C469.37,287.547,468.806,287.168,468.124,287.168z" />
+          </svg> strengths
+                        </h2>
+                        <p>Number of key strengths across organisation</p>
+                    </div>
+                    <div *ngIf="barChartLabels.length > 0" class="play-progress-total">
+                        <!--<img src="../../assets/images/chart-placeholder.png" />-->
+                        <canvas id="strengthChart" baseChart
+                                [datasets]="barChartDataThird"
+                                [labels]="barChartLabels"
+                                [options]="barChartOptions"
+                                [legend]="barChartLegend"
+                                [chartType]="barChartType"
+                                [colors]="colorsOverride"
+                                (chartHover)="chartHovered($event)"
+                                (chartClick)="chartClicked($event)"></canvas>
+                    </div>
+                    <div class="ten-learning-table">
+                        <div class="left-side-table">
+                            <h5>
+                                Top 10 Strengths # at<br />
+                                organisation level
+                            </h5>
+                            <ul>
+                                <li *ngFor="let strength of strengthHashtags | slice:0:9"><strong>#</strong><span>{{strength.hashtagName}}</span></li>
+                            </ul>
+                        </div>
+                        <div class="left-side-table right">
+                            <h5>
+                                Top Key strengths seen in<br />
+                                action across organisation
+                            </h5>
+                            <ul>
+                                <li *ngFor="let kStrengths of keyStrengths | slice:0:4"><strong>#</strong><span>&{{kStrengths.hashtagName}}</span></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <!--<div *ngFor="let workhm of datas2" id="section3">
+            </div>-->
+
+                <div class="ten-empolyee">
+                    <h2>Strengths seen in action - top 10 employees</h2>
+                    <ul>
+                        <li *ngFor="let employee of topEmployeesInStrWithOrg | slice:0:9; let i = index">
+                            <div class="thumb-images">
+                                <svg version="1.1" id="Tree" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+                                     width="38.125px" height="39px" viewBox="461.125 260.375 38.125 39" enable-background="new 461.125 260.375 38.125 39"
+                                     xml:space="preserve">
+                                <path d="M479.251,275.915c-0.684,0.172-1.109,0.91-0.949,1.647c1.311,6.088,1.598,12.469,0.826,18.451
+  c-0.096,0.752,0.389,1.445,1.084,1.549c0.059,0.008,0.119,0.014,0.178,0.014c0.624,0,1.168-0.498,1.258-1.184
+  c0.813-6.314,0.512-13.039-0.869-19.452C480.619,276.201,479.935,275.747,479.251,275.915z M476.306,283.643
+  c-0.699,0.07-1.215,0.738-1.15,1.492c0.311,3.6,0.229,7.152-0.24,10.561c-0.104,0.748,0.377,1.447,1.07,1.559
+  c0.063,0.01,0.125,0.014,0.189,0.014c0.619,0,1.162-0.488,1.256-1.17c0.498-3.623,0.586-7.398,0.258-11.215
+  C477.624,284.127,476.981,283.565,476.306,283.643z M478.298,271.458c-1.434,0.36-2.652,1.303-3.432,2.65
+  c-0.779,1.352-1.025,2.945-0.691,4.489c0.16,0.749,0.307,1.5,0.434,2.25c0.123,0.746,0.803,1.238,1.479,1.104
+  c0.691-0.137,1.148-0.852,1.021-1.598c-0.135-0.792-0.287-1.583-0.457-2.376c-0.18-0.831-0.047-1.689,0.373-2.416
+  c0.422-0.729,1.078-1.236,1.848-1.43c1.596-0.4,3.188,0.678,3.558,2.396c1.365,6.334,1.723,12.68,1.063,18.861
+  c-0.082,0.754,0.42,1.434,1.117,1.521c0.049,0.006,0.1,0.008,0.146,0.008c0.639,0,1.188-0.516,1.262-1.215
+  c0.693-6.496,0.32-13.156-1.111-19.797C484.221,272.718,481.264,270.723,478.298,271.458z M473.888,272.433
+  c0.438-0.594,0.344-1.457-0.209-1.928s-1.35-0.365-1.783,0.226c-0.225,0.305-0.432,0.626-0.625,0.958
+  c-1.379,2.389-1.814,5.211-1.223,7.946c1.086,5.045,1.34,10.225,0.732,14.982c-0.096,0.752,0.391,1.443,1.086,1.547
+  c0.061,0.008,0.119,0.012,0.176,0.012c0.627,0,1.17-0.496,1.258-1.184c0.648-5.088,0.379-10.611-0.775-15.979
+  c-0.436-2.021-0.115-4.107,0.904-5.874C473.571,272.893,473.724,272.657,473.888,272.433z M489.188,285.008
+  c-0.701,0.037-1.242,0.68-1.207,1.438c0.115,2.531,0.078,5.074-0.107,7.559c-0.059,0.756,0.463,1.418,1.162,1.479
+  c0.035,0.002,0.07,0.004,0.105,0.004c0.654,0,1.211-0.543,1.264-1.26c0.197-2.602,0.236-5.266,0.115-7.918
+  C490.484,285.553,489.871,284.987,489.188,285.008z M488.877,283.114c0.053,0,0.105-0.002,0.158-0.01
+  c0.697-0.094,1.191-0.779,1.105-1.531c-0.258-2.237-0.631-4.492-1.107-6.701c-1.012-4.71-5.031-8.13-9.558-8.13
+  c-0.715,0-1.432,0.088-2.129,0.261c-0.578,0.145-1.145,0.346-1.686,0.599c-0.645,0.301-0.939,1.109-0.662,1.805
+  c0.279,0.695,1.029,1.016,1.672,0.715c0.4-0.188,0.822-0.338,1.248-0.444c0.508-0.126,1.031-0.19,1.557-0.19
+  c3.356,0,6.333,2.525,7.081,6.008c0.457,2.117,0.814,4.275,1.061,6.417C487.697,282.606,488.244,283.114,488.877,283.114z
+   M493.162,273.841c-0.578-2.693-1.857-5.168-3.697-7.16c-0.494-0.535-1.299-0.533-1.799,0.002c-0.498,0.535-0.498,1.415-0.002,1.951
+  c1.504,1.629,2.549,3.672,3.021,5.868c1.184,5.496,1.713,11.133,1.574,16.646c-0.02,0.758,0.533,1.508,1.236,1.508h0.035
+  c0.686,0,1.25-0.686,1.27-1.432C494.945,285.477,494.395,279.564,493.162,273.841z M467.745,285.073
+  c0.061,0,0.124-0.004,0.188-0.014c0.693-0.111,1.174-0.809,1.072-1.559c-0.154-1.131-0.357-2.291-0.607-3.451
+  c-0.693-3.211-0.184-6.524,1.438-9.328c1.615-2.799,4.148-4.753,7.123-5.5c2.572-0.639,5.31-0.262,7.673,1.021
+  c0.625,0.344,1.391,0.068,1.707-0.607c0.316-0.678,0.063-1.503-0.564-1.844c-2.889-1.568-6.235-2.023-9.388-1.243
+  c-3.641,0.915-6.734,3.302-8.711,6.722c-1.979,3.428-2.602,7.478-1.754,11.401c0.233,1.088,0.424,2.172,0.567,3.229
+  C466.581,284.582,467.124,285.073,467.745,285.073z M468.124,287.168h-0.043c-0.702,0-1.252,0.455-1.229,1.213
+  c0.05,1.551,0.007,2.891-0.127,4.371c-0.07,0.754,0.441,1.424,1.141,1.498c0.041,0.004,0.084,0.004,0.125,0.004
+  c0.646,0,1.199-0.434,1.264-1.143c0.145-1.602,0.193-3.152,0.141-4.824C469.37,287.547,468.806,287.168,468.124,287.168z" />
+            </svg>
+                            </div>
+                            <div class="number">{{i+1}}</div>
+                            <div class="images-area"><img *ngIf="profilePicture" width="40" alt="" class="img-circle" [src]="employee.profilePic" /></div>
+                            <div class="label-name">{{ employee.user}}</div>
+                            <div class="departmanet">{{ employee.department }}</div>
+                        </li>
+                    </ul>
+                </div>
+                <div class="play-area coprate-value">
+                    <div class="play-discrptions">
+                        <h2>
+                            <svg version="1.1" id="Tree" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+                                 width="38.125px" height="39px" viewBox="461.125 260.375 38.125 39" enable-background="new 461.125 260.375 38.125 39"
+                                 xml:space="preserve">
+                            <path d="M480.187,268.927c-5.671-8.686-16.776-2.991-16.776,5.019c0,6.177,9.652,11.495,16.776,21.231
+  c7.122-9.732,16.777-15.053,16.777-21.231C496.964,265.936,486.208,260.241,480.187,268.927" />
+          </svg> <span>corporate</span>values
+                        </h2>
+                        <p>
+                            Number of team
+                            members living
+                            the values across
+                            organisation
+                        </p>
+                    </div>
+                    <div class="play-progress-total">
+                        <table width="100%" border="0" cellspacing="0">
+                            <thead>
+                                <tr>
+                                    <th *ngFor="let header of corporateValuesHeader">{{header.department}}</th>
+                                </tr>
+                            </thead>
+                            <!--<tr *ngFor="let totls of workhm.total; let i = index">
+                            <td>Value {{ totls.total }}</td>
+                            <td>Value {{ totls.markting }}</td>
+                            <td>Value {{ totls.hr_one }}</td>
+                            <td>Value {{ totls.Finance_one }}</td>
+                            <td>Value {{ totls.product_one }}</td>
+                        </tr>-->
+
+                        </table>
+                    </div>
+                </div>
+                <div class="offering">
+                    <h1>employees offering to :</h1>
+                    <div class="teach">
+
+                        <h2>teach</h2>
+                        <div class="count-area">
+                            <svg version="1.1" id="Tree" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+                                 width="38.125px" height="39px" viewBox="461.125 260.375 38.125 39" enable-background="new 461.125 260.375 38.125 39"
+                                 xml:space="preserve">
+                            <path d="M491.638,268.426c-1.544-1.543-2.916-1.088-2.916-1.088l-12.098,12.088l-2.035,6.048l6.045-2.036l12.091-12.097
+  C492.726,271.341,493.18,269.969,491.638,268.426z M481.038,282.119l-0.66,0.659l-2.063,0.7c-0.146-0.336-0.328-0.668-0.697-1.036
+  c-0.37-0.37-0.7-0.552-1.036-0.698l0.7-2.063l0.66-0.658c0,0,1.086-0.125,2.152,0.942
+  C481.161,281.032,481.038,282.119,481.038,282.119z M488.593,289.675h-18.205V271.47h7.002l2.8-2.801h-9.802
+  c-1.541,0-2.801,1.26-2.801,2.801v18.205c0,1.541,1.261,2.801,2.801,2.801h18.205c1.541,0,2.801-1.26,2.801-2.801v-9.803
+  l-2.801,2.801V289.675z" />
+          </svg> {{ userDetailCount.teachCount }}
+                        </div>
+                    </div>
+                    <div class="teach">
+                        <h2>share</h2>
+                        <div class="count-area">
+                            <svg version="1.1" id="Tree" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+                                 width="38.125px" height="39px" viewBox="461.125 260.375 38.125 39" enable-background="new 461.125 260.375 38.125 39"
+                                 xml:space="preserve">
+                            <path d="M480.188,265.305c-8.049,0-14.572,6.522-14.572,14.57c0,8.049,6.523,14.57,14.572,14.57c8.045,0,14.57-6.521,14.57-14.57
+  C494.759,271.827,488.233,265.305,480.188,265.305z M481.548,270.565c1.421,0,1.839,0.824,1.839,1.767
+  c0,1.177-0.941,2.265-2.549,2.265c-1.345,0-1.985-0.675-1.946-1.794C478.892,271.86,479.68,270.565,481.548,270.565z
+   M477.908,288.602c-0.972,0-1.68-0.59-1.001-3.178l1.112-4.592c0.192-0.734,0.225-1.029,0-1.029c-0.29,0-1.552,0.507-2.295,1.008
+  l-0.484-0.794c2.36-1.972,5.074-3.127,6.235-3.127c0.972,0,1.132,1.147,0.647,2.913l-1.275,4.826
+  c-0.226,0.854-0.128,1.148,0.099,1.148c0.291,0,1.244-0.352,2.183-1.092l0.549,0.738
+  C481.382,287.719,478.878,288.602,477.908,288.602z" />
+          </svg> {{ userDetailCount.shareCount }}
+                        </div>
+                    </div>
+                    <div class="teach">
+                        <h2>project volunteer</h2>
+                        <div class="count-area">
+                            <svg version="1.1" id="Tree" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+                                 width="38.125px" height="39px" viewBox="461.125 260.375 38.125 39" enable-background="new 461.125 260.375 38.125 39"
+                                 xml:space="preserve">
+                            <path d="M489.392,293.823c0-3.451-3.361-5.209-6.635-6.619c-3.262-1.404-4.304-2.588-4.304-5.123c0-1.521,0.996-1.025,1.432-3.813
+  c0.184-1.156,1.063-0.019,1.232-2.657c0-1.051-0.48-1.312-0.48-1.312s0.244-1.558,0.34-2.756c0.098-1.256-0.612-3.935-3.537-4.756
+  c-0.51-0.524-0.856-1.356,0.717-2.188c-3.442-0.16-4.243,1.641-6.076,2.966c-1.56,1.161-1.981,3.001-1.906,3.98
+  c0.1,1.199,0.343,2.755,0.343,2.755s-0.483,0.262-0.483,1.313c0.169,2.64,1.051,1.501,1.234,2.657
+  c0.436,2.787,1.434,2.293,1.434,3.813c0,2.536-0.326,3.396-3.591,4.802c-3.274,1.408-4.293,3.668-4.276,6.939
+  c0.004,0.979-0.017,1.338-0.017,1.338h24.589C489.408,295.161,489.392,294.802,489.392,293.823z M493.293,284.964
+  c-1.744-0.701-2.467-1.539-2.467-3.174c0-0.984,0.644-0.663,0.927-2.463c0.117-0.744,0.686-0.012,0.795-1.714
+  c0-0.678-0.31-0.847-0.31-0.847s0.157-1.008,0.22-1.781c0.077-0.963-0.56-3.453-3.486-3.453c-2.925,0-3.563,2.49-3.486,3.453
+  c0.064,0.771,0.221,1.781,0.221,1.781s-0.31,0.167-0.31,0.847c0.109,1.702,0.677,0.97,0.796,1.714c0.282,1.8,0.925,1.48,0.925,2.463
+  c0,1.635-0.673,2.4-2.779,3.307c-0.106,0.045-0.186,0.105-0.282,0.156c2.52,1.096,6.494,2.984,7.436,6.836h4.064c0,0,0-2.93,0-3.563
+  C495.556,286.99,495.136,285.706,493.293,284.964z" />
+          </svg> {{ userDetailCount.volunteerCount }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+    </div>
+</div>

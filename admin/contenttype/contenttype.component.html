@@ -1,0 +1,18 @@
+﻿<div [@routerTransition]>
+    <div class="row margin-bottom-5">
+        <div class="col-xs-6">
+            <div class="page-head">
+                <div class="page-title">
+                    <h1>
+                        <span>{{l("ContentType")}}</span> <small>{{l("ContentTypeHeaderInfo")}}</small>
+                    </h1>
+                </div>
+            </div>
+        </div>
+        <div class="col-xs-6 text-right">
+            <button (click)="createContentType()" *ngIf="isGranted('Pages.Administration.ContentType.Create')" class="btn btn-primary blue"><i class="fa fa-plus"></i> {{l("CreateContentType")}}</button>
+        </div>
+    </div>
+    <div id="ContentTypeTable"></div>
+    <createOrEditContentTypeModal #createOrEditContentTypeModal (modalSave)="getContentTypes()"></createOrEditContentTypeModal>
+</div>

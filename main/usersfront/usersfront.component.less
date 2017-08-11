@@ -1,0 +1,58 @@
+﻿@tableWidth: 1600px;
+@padding:8px;
+@height:40px;
+#UsersFrontTable {
+    .jtable-main-container {
+        .jtable-title {
+            min-width: @tableWidth;
+            height: @height;
+            display:none;
+        }
+        
+        .jtable {
+            min-width: @tableWidth;
+            vertical-align:middle !important;
+            thead{
+                background-color:#346cbf;
+                tr{
+                    height:@height;
+                }
+                
+            }
+            tbody{
+                tr{
+                    height:@height;
+                }
+            }
+        }
+
+        .jtable-bottom-panel {
+            min-width: @tableWidth;
+            height:@height;
+            background-color:#346cbf;
+        }
+
+        .jtable-left-area
+        {
+            padding-top:@padding;
+        }
+
+        .jtable-right-area{
+            padding-top:@padding;
+        }
+
+        .jtable-goto-page,.jtable-page-size-change
+        {
+            display:none !important;
+        }
+    }
+}
+#UsersFront{
+    .btn.blue:not(.btn-outline) {
+    background-color: #3cbb6a !important;
+    border-color: #3cbb6a !important;
+}
+.page-head{
+            background:none;
+        }
+}

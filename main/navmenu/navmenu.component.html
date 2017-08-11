@@ -1,0 +1,118 @@
+<div class="page-wrapper-top">
+    <!-- BEGIN HEADER -->
+    <div class="page-header" style="height:0 !important">
+        <!-- BEGIN HEADER MENU -->
+        <div class="page-header-menu">
+            <div class="container">
+                <!-- BEGIN HEADER SEARCH BOX -->
+                <form class="search-form" action="page_general_search.html" method="GET" style="display:none">
+                    <div class="input-group">
+                        <input type="text" class="form-control" placeholder="Search" name="query">
+                        <span class="input-group-btn">
+                            <a href="javascript:;" class="btn submit">
+                                <i class="icon-magnifier"></i>
+                            </a>
+                        </span>
+                    </div>
+                </form>
+                <!-- END HEADER SEARCH BOX -->
+                <!-- BEGIN MEGA MENU -->
+                <!-- DOC: Apply "hor-menu-light" class after the "hor-menu" class below to have a horizontal menu with white background -->
+                <!-- DOC: Remove data-hover="dropdown" and data-close-others="true" attributes below to disable the dropdown opening on mouse hover -->
+                <div class="hor-menu  ">
+                    <ul class="nav navbar-nav">
+                        <li class="menu-dropdown classic-menu-dropdown " [routerLinkActive]="['link-active']">
+                            <a href="javascript:;" [routerLink]="['/app/main/dashboard']">
+                                Dashboard
+                                <span class="arrow"></span>
+                            </a>
+                        </li>
+
+                        <li class="menu-dropdown classic-menu-dropdown ">
+                            <a href="javascript:;">
+                                Reports
+                                <span class="arrow"></span>
+                            </a>
+                            <ul class="dropdown-menu pull-left">
+                                <li class="" [routerLinkActive]="['link-active']">
+                                    <a href="javascript:;" target="_blank" [routerLink]="['/reports/humscore', humCycleId, 0]"> Company Report </a>
+                                </li>
+                                <li class="" [routerLinkActive]="['link-active']">
+                                    <a href="javascript:;" target="_blank" [routerLink]="['/reports/humscore', humCycleId, orgUnitId]"> Department Report </a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li class="menu-dropdown mega-menu-dropdown" [routerLinkActive]="['link-active']">
+                            <a href="javascript:;" [routerLink]="['/app/main/user-profile-account']">
+                                My Profile
+                                <span class="arrow"></span>
+                            </a>
+                        </li>
+                        <li class="menu-dropdown classic-menu-dropdown ">
+                            <a href="javascript:;" >
+                                Settings
+                                <span class="arrow"></span>
+                            </a>
+                            <ul class="dropdown-menu pull-left">
+                                <!--<li class="" [routerLinkActive]="['link-active']" >
+                                    <a href="" class="nav-link" [routerLink]="['workhum/company-detail']"> Company Details </a>
+                                </li>-->
+                                <li class="" [routerLinkActive]="['link-active']" >
+                                    <a href="" class="nav-link" [routerLink]="['/app/main/company-department']" > Departments </a>
+                                </li>
+                                <li class="" [routerLinkActive]="['link-active']" >
+                                    <a href="" class="nav-link"  [routerLink]="['/app/main/company-hashtag']" > Hashtags </a>
+                                </li>
+                                <li class="" [routerLinkActive]="['link-active']" >
+                                    <a href="" class="nav-link" [routerLink]="['/app/main/usersfront']" > Users </a>
+                                </li>    
+                                <li class="" [routerLinkActive]="['link-active']">
+                                    <a href="" class="nav-link" [routerLink]="['/app/main/hum-check/3AED55F9-3FC2-FE2A-7148-39DE7E6FB387']"> Hum Check </a>
+                                </li>                            
+                            </ul>
+                        </li>
+                       
+                    </ul>
+                </div>
+                <!-- END MEGA MENU -->
+            </div>
+        </div>
+        <!-- END HEADER MENU -->
+    </div>
+    <!-- END HEADER -->
+</div>
+
+
+<!--<div class='main-nav'>
+    <div class='navbar navbar-inverse'>
+        <div class='navbar-header'>
+            <button type='button' class='navbar-toggle' data-toggle='collapse' data-target='.navbar-collapse'>
+                <span class='sr-only'>Toggle navigation</span>
+                <span class='icon-bar'></span>
+                <span class='icon-bar'></span>
+                <span class='icon-bar'></span>
+            </button>
+            <a class='navbar-brand' [routerLink]="['/home']">workhum.Client</a>
+        </div>
+        <div class='clearfix'></div>
+        <div class='navbar-collapse collapse'>
+            <ul class='nav navbar-nav'>
+                <li [routerLinkActive]="['link-active']">
+                    <a [routerLink]="['/home']">
+                        <span class='glyphicon glyphicon-home'></span> Home
+                    </a>
+                </li>
+                <li [routerLinkActive]="['link-active']">
+                    <a [routerLink]="['/counter']">
+                        <span class='glyphicon glyphicon-education'></span> Counter
+                    </a>
+                </li>
+                <li [routerLinkActive]="['link-active']">
+                    <a [routerLink]="['/fetch-data']">
+                        <span class='glyphicon glyphicon-th-list'></span> Fetch data
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>-->
